@@ -18,3 +18,8 @@ void Widget::on_pushButton_2_clicked()
 {
     ui->Canvas->clearPoints();
 }
+
+void Widget::on_pushButton_3_clicked()
+{
+    ui->Canvas->setDrawMode();
+}

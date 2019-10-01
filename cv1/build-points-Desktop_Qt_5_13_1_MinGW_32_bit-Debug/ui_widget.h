@@ -26,6 +26,8 @@ public:
     QHBoxLayout *horizontalLayout;
     Draw *Canvas;
     QVBoxLayout *verticalLayout;
+    QSpacerItem *verticalSpacer_3;
+    QPushButton *pushButton_3;
     QSpacerItem *verticalSpacer_2;
     QPushButton *pushButton;
     QSpacerItem *verticalSpacer;
@@ -50,7 +52,16 @@ public:
 
         verticalLayout = new QVBoxLayout();
         verticalLayout->setObjectName(QString::fromUtf8("verticalLayout"));
-        verticalSpacer_2 = new QSpacerItem(20, 600, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        verticalSpacer_3 = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer_3);
+
+        pushButton_3 = new QPushButton(Widget);
+        pushButton_3->setObjectName(QString::fromUtf8("pushButton_3"));
+
+        verticalLayout->addWidget(pushButton_3);
+
+        verticalSpacer_2 = new QSpacerItem(20, 300, QSizePolicy::Minimum, QSizePolicy::Fixed);
 
         verticalLayout->addItem(verticalSpacer_2);
 
@@ -80,6 +91,7 @@ public:
     void retranslateUi(QWidget *Widget)
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "Draw points", nullptr));
+        pushButton_3->setText(QCoreApplication::translate("Widget", "Draw pt/poly", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Remove last", nullptr));
         pushButton_2->setText(QCoreApplication::translate("Widget", "Clear", nullptr));
     } // retranslateUi
