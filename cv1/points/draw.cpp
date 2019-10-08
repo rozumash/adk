@@ -23,7 +23,7 @@ void Draw::mousePressEvent(QMouseEvent *e)
         QPoint p(x,y);
 
         //Add point to the list
-        points.push_back(p);
+        polygon.push_back(p);
     }
 
     //Set coordinate of q
@@ -45,16 +45,16 @@ void Draw::paintEvent(QPaintEvent *e)
     qp.drawEllipse(q.x() - r2/2,q.y() - r2/2, r2, r2);
 
     //Draw all points
-    for (int i = 0; i < points.size(); i++)
+    for (int i = 0; i < polygon.size(); i++)
     {
-        qp.drawEllipse(points[i].x() - r/2,points[i].y() - r/2, r, r);
+        qp.drawEllipse(polygon[i].x() - r/2,polygon[i].y() - r/2, r, r);
     }
 
     //Draw  polygon
     QPolygon qpoly;
-    for(int i = 0;i < points.size(); i++)
+    for(int i = 0;i < polygon.size(); i++)
     {
-        qpoly.append(points[i]);
+        qpoly.append(polygon[i]);
     }
 
     qp.drawPolygon(qpoly);
@@ -65,7 +65,7 @@ void Draw::paintEvent(QPaintEvent *e)
 
 void Draw::clearPoints()
 {
-      points.clear();
+      polygon.clear();
       q.setX(-100);
       q.setY(-100);
       repaint();

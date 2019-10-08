@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Draw points</string>
+   <string>Analyze point and polygon position</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
    <item>
@@ -26,6 +26,27 @@
    </item>
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QLabel" name="label_2">
+       <property name="text">
+        <string>Select method:</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="comboBox">
+       <item>
+        <property name="text">
+         <string>Winding Algorithm</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string>Ray Crossing Algorithm</string>
+        </property>
+       </item>
+      </widget>
+     </item>
      <item>
       <spacer name="verticalSpacer_3">
        <property name="orientation">
@@ -63,9 +84,16 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="pushButton">
+      <widget class="QPushButton" name="pushButton_4">
        <property name="text">
-        <string>Remove last</string>
+        <string>Analyze</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="text">
+        <string/>
        </property>
       </widget>
      </item>

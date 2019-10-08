@@ -11,7 +11,7 @@ class Draw : public QWidget
 
 private:
     bool draw_mode;
-    std::vector<QPoint> points;
+    std::vector<QPoint> polygon;
     QPoint q;
 
 public:
@@ -20,6 +20,9 @@ public:
     void paintEvent(QPaintEvent *e);
     void clearPoints();
     void setDrawMode(){draw_mode = !draw_mode;}
+    QPoint getPoint(){return q;}
+    std::vector<QPoint> getPolygon(){return polygon;}
+
 
 
 
