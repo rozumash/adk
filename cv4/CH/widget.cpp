@@ -18,8 +18,16 @@ Widget::~Widget()
 void Widget::on_pushButton_clicked()
 {
     //Create convex hull
+    QPolygon ch;
     std::vector<QPoint> points = ui->Canvas->getPoints();
-    std::vector<QPoint> ch = Algorithms::jarvisScan(points);
+
+    //Create CH
+    if (ui->comboBox->currentIndex() == 0)
+        ch = Algorithms::jarvisScan(points);
+    else
+        ch = Algorithms::qHull(points);
+
+    //Draw
     ui->Canvas->setCH(ch);
     repaint();
 }

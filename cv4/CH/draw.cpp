@@ -33,14 +33,7 @@ Draw::Draw(QWidget *parent) : QWidget(parent)
      }
 
      // Draw Ch
-     QPolygon polygon;
-     for (int i=0; i< ch.size(); i++)
-     {
-         polygon.append(ch[i]);
-
-     }
-
-     qp.drawPolygon(polygon);
+     qp.drawPolygon(ch);
      qp.end();
 
      }

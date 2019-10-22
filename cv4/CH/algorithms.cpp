@@ -1,10 +1,22 @@
 #include "algorithms.h"
 #include <cmath>
 #include "sortbyy.h"
+#include "sortbyx.h"
 
 Algorithms::Algorithms()
 {
 
+}
+
+double Algorithms::getPointLineDistance(QPoint &q, QPoint &p1, QPoint &p2){
+    //Calculate point and line distance
+    double numerator = q.x() * (p1.y() - p2.y()) + p1.x() * (p2.y() - q.y()) + p2.x() * (q.y() - p1.y());
+    double dx = p2.x() - p1.x();
+    double dy = p2.y() - p1.y();
+    double denumenator = sqrt(dx * dx + dy * dy);
+
+    double dist = fabs(numerator)/denumenator;
+    return dist;
 }
 
 int Algorithms::getPointLinePosition(QPoint &q,QPoint &p1,QPoint &p2)
@@ -49,10 +61,10 @@ double Algorithms::getAngle2Vectors(QPoint &p1, QPoint &p2, QPoint &p3, QPoint &
     return angle;
 }
 
-std::vector<QPoint> Algorithms::jarvisScan(std::vector<QPoint> &points)
+QPolygon Algorithms::jarvisScan(std::vector<QPoint> &points)
 {
     //Convex hull
-    std::vector<QPoint> ch;
+    QPolygon ch;
 
     //Sort points by Y
     std::sort(points.begin(), points.end(), SortbyY());
@@ -95,5 +107,76 @@ std::vector<QPoint> Algorithms::jarvisScan(std::vector<QPoint> &points)
     } while (!(pj == q));
 
     return ch;
+
+}
+
+QPolygon Algorithms::qHull(std::vector<QPoint> &points)
+{
+    //Convex Hull by quick hull method
+    QPolygon ch;
+    std::vector<QPoint> upoints, lpoints;
+
+    // Sort by X.
+    std::sort(points.begin(), points.end(), SortbyY());
+    QPoint q1 = points[0];
+    QPoint q3 = points.back();
+
+    //Add q1, q3 to upoints, lpoints
+    upoints.push_back(q1);
+    upoints.push_back(q3);
+
+    lpoints.push_back(q1);
+    lpoints.push_back(q3);
+
+    // Split to upoints / lpoints
+    for(unsigned int i=0; i < points.size();i++){
+
+        //Add to the upper part
+        if(getPointLinePosition(points[i], q1, q3) == 1)
+            upoints.push_back(points[i]);
+
+        //Add to the lower part
+        else if (getPointLinePosition(points[i], q1, q3) == 0)
+            lpoints.push_back(points[i]);
+    }
+
+    //Call recursive function
+    ch.push_back(q3);
+    qh(1, 0, upoints, ch);
+    ch.push_back(q1);
+    qh(0, 1, lpoints, ch);
+
+    return ch;
+}
+
+void Algorithms::qh(int s, int e, std::vector<QPoint> &points, QPolygon &ch){
+
+    //Recursive procedure
+    int i_max = -1;
+    double d_max = 0;
+
+    // Browse all points
+    for (int i = 2; i < points.size(); i++)
+    {
+       // Is the point in the right half plane
+        if (getPointLinePosition(points[i], points[s], points[e]) == 0)
+        {
+            double d = getPointLineDistance(points[i], points[s], points[e]);
+
+            //Actualization of d_max
+            if(d > d_max){
+                d_max = d;
+                i_max = i;
+            }
+        }
+    }
+
+    //Suitable point has been found
+    if(i_max != -1)
+    {
+        qh(s, i_max, points, ch);
+        ch.push_back(points[i_max]);
+        qh(i_max, e, points, ch);
+    }
 
 }

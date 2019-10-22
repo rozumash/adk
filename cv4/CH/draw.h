@@ -9,7 +9,8 @@ class Draw : public QWidget
     Q_OBJECT
 
 private:
-    std::vector<QPoint> points, ch;
+    std::vector<QPoint> points;
+    QPolygon ch;
 
 public:
     explicit Draw(QWidget *parent = nullptr);
@@ -18,7 +19,7 @@ public:
     void clearCH(){ch.clear(); repaint();}
     void clearPoints(){points.clear(); repaint();}
     std::vector<QPoint> getPoints(){return points;}
-    void setCH(std::vector<QPoint> &hull){ ch = hull;}
+    void setCH(QPolygon &hull){ ch = hull;}
 
 signals:
 
