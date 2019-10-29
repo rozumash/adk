@@ -13,6 +13,7 @@ public:
     static QPolygon jarvisScan(std::vector<QPoint> &points);
     static QPolygon qHull(std::vector<QPoint> &points);
     static void qh(int s, int e, std::vector<QPoint> &points, QPolygon &ch);
+    static QPolygon sweepLine(std::vector<QPoint> &points);
 };
 
 #endif // ALGORITHMS_H

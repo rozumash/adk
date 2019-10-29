@@ -117,7 +117,7 @@ QPolygon Algorithms::qHull(std::vector<QPoint> &points)
     std::vector<QPoint> upoints, lpoints;
 
     // Sort by X.
-    std::sort(points.begin(), points.end(), SortbyY());
+    std::sort(points.begin(), points.end(), SortbyX());
     QPoint q1 = points[0];
     QPoint q3 = points.back();
 
@@ -179,4 +179,84 @@ void Algorithms::qh(int s, int e, std::vector<QPoint> &points, QPolygon &ch){
         qh(i_max, e, points, ch);
     }
 
+}
+
+QPolygon Algorithms::sweepLine(std::vector<QPoint> &points)
+{
+    //Increment method, sweep line
+    QPolygon ch;
+
+    int m = points.size();
+
+    //List of predecessors
+    std::vector<int> p(m);
+
+    //List of successors
+    std::vector<int> n(m);
+
+    //Sort points by X
+    std::sort(points.begin(),points.end(),SortbyX());
+
+    // Create initial aproximation
+    n[0] = 1;
+    n[1] = 0;
+    p[0] = 1;
+    p[1] = 0;
+
+    // Process all points according to x coordinates
+    for (int i = 2; i < m; i++)
+    {
+        //Point i lies in the upper half plane
+        if(points[i].y() > points[i-1].y()){
+            //Link i and its predecessor and successor
+            p[i] = i-1;
+            n[i] = n[i-1];
+        }
+
+        //Point i lies in the lower half plane
+        else
+        {
+            //Link i and its predecessor and successor
+            p[i] = p[i-1];
+            n[i] = i - 1;
+        }
+
+        //Link predecessor and successor and i
+        p[n[i]] = i;
+        n[p[i]] = i;
+
+        //Fix upper tangent
+        while (getPointLinePosition(points[n[n[i]]], points[i], points[n[i]]) == 0)
+        {
+            //Change predecessor and successor
+            p[n[n[i]]] = i;
+            n[i] = n[n[i]];
+        }
+
+        //Fix lower tangent
+        while (getPointLinePosition(points[p[p[i]]], points[i], points[p[i]]) == 1)
+        {
+            //Change predecessor and successor
+            n[p[p[i]]] = i;
+            p[i] = p[p[i]];
+        }
+    }
+
+    //Convert successors to ch
+    ch.push_back(points[0]);
+
+    //Second point of CH
+    int index = n[0];
+
+    //Repeat until the first point is found
+    while(index != 0)
+    {
+        //Add to the polygon
+        ch.push_back(points[index]);
+
+        //Find its successor
+        index = n[index];
+    }
+
+    return ch;
 }

@@ -24,10 +24,22 @@ void Widget::on_pushButton_clicked()
     //Create CH
     if (ui->comboBox->currentIndex() == 0)
         ch = Algorithms::jarvisScan(points);
-    else
+    else if(ui->comboBox->currentIndex() == 1)
         ch = Algorithms::qHull(points);
+    else
+        ch = Algorithms::sweepLine(points);
 
     //Draw
     ui->Canvas->setCH(ch);
     repaint();
+}
+
+void Widget::on_pushButton_2_clicked()
+{
+    ui->Canvas->clearPoints();
+}
+
+void Widget::on_pushButton_3_clicked()
+{
+    ui->Canvas->clearCH();
 }
