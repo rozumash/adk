@@ -53,7 +53,7 @@ double Algorithms::getCircleRadius(QPoint3D &p1, QPoint3D &p2, QPoint3D &p3){
     double k11 = x2 * x2;
     double k12 = x3 * x3;
 
-    //Midpoint of circle
+    //Midpoint of the circle
     double m_numerator = k12 * (-k4) + k11 * k5 - (k10 + k4*k5)*k6;
     double m_denominator = x3*(-k4)+x2*k5+x1*(-k6);
     double m = 0.5 * m_numerator / m_denominator;
@@ -62,5 +62,6 @@ double Algorithms::getCircleRadius(QPoint3D &p1, QPoint3D &p2, QPoint3D &p3){
     double n_denominator = y1*(-k9) + y2 * k8 + y3 * (-k7);
     double n = 0.5 * n_numerator / n_denominator;
 
+    //Radius of the circle
     return sqrt((x1-m)*(x1-m)+(y1-n)*(y1-n));
 }
