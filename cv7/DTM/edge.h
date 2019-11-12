@@ -22,7 +22,7 @@ public:
         e = help;
     }
 
-    bool operator == (Edge &h){
+    bool operator == (const Edge &h) const {
         return (h.s == s) && (h.e == e);
     }
 
