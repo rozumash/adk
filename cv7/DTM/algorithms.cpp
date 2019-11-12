@@ -7,25 +7,26 @@ Algorithms::Algorithms()
 
 int Algorithms::getPointLinePosition(QPoint3D &q,QPoint3D &p1,QPoint3D &p2)
 {
-//Analyze point and line position
-//1 point in the left half plane
-//0 point in the right half plane
-//-1 point on the line
-double ux = p2.x() - p1.x();
-double uy = p2.y() - p1.y();
+    //Analyze point and line position
+    //1 point in the left half plane
+    //0 point in the right half plane
+    //-1 point on the line
+    double ux = p2.x() - p1.x();
+    double uy = p2.y() - p1.y();
 
-double vx = q.x() - p1.x();
-double vy = q.y() - p1.y();
+    double vx = q.x() - p1.x();
+    double vy = q.y() - p1.y();
 
-double t = ux * vy - uy * vx;
+    double t = ux * vy - uy * vx;
 
-//Point in the left half plane
-if (t>0)
-    return 1;
-if (t<0)
-    return 0;
-return -1;
+    //Point in the left half plane
+    if (t>0)
+        return 1;
+    if (t<0)
+        return 0;
+    return -1;
 }
+
 
 double Algorithms::getCircleRadius(QPoint3D &p1, QPoint3D &p2, QPoint3D &p3, QPoint3D &c){
 
@@ -55,11 +56,11 @@ double Algorithms::getCircleRadius(QPoint3D &p1, QPoint3D &p2, QPoint3D &p3, QPo
 
     //Midpoint of the circle
     double m_numerator = k12 * (-k4) + k11 * k5 - (k10 + k4*k5)*k6;
-    double m_denominator = x3*(-k4)+x2*k5+x1*(-k6);
+    double m_denominator = x3 * (-k4) + x2 * k5 + x1 * (-k6);
     double m = 0.5 * m_numerator / m_denominator;
 
     double n_numerator = k1 * (-k9) + k2 * k8 + k3 * (-k7);
-    double n_denominator = y1*(-k9) + y2 * k8 + y3 * (-k7);
+    double n_denominator = y1 * (-k9) + y2 * k8 + y3 * (-k7);
     double n = 0.5 * n_numerator / n_denominator;
 
     //Set circle center
@@ -67,22 +68,22 @@ double Algorithms::getCircleRadius(QPoint3D &p1, QPoint3D &p2, QPoint3D &p3, QPo
     c.setY(n);
 
     //Radius of the circle
-    return sqrt((x1-m)*(x1-m)+(y1-n)*(y1-n));
+    return sqrt((x1 - m) * (x1 - m) + (y1 - n) * (y1 - n));
 }
 
-    double Algorithms::distance2Points(QPoint3D &p1, QPoint3D &p2)
-    {
-        // Get distance of two points
-        double dx = (p1.x() - p2.x());
-        double dy = (p1.y() - p2.y());
+double Algorithms::distance2Points(QPoint3D &p1, QPoint3D &p2)
+{
+     // Get distance of two points
+     double dx = (p1.x() - p2.x());
+     double dy = (p1.y() - p2.y());
 
-        return sqrt(dx*dx + dy*dy);
-    }
+     return sqrt(dx*dx + dy*dy);
+}
 
 int Algorithms::getNearestpoint(QPoint3D &p, std::vector<QPoint3D> &points)
 {
     // Find nearest point
-    int i_min = -1;
+    int i_min = 1;
     double d_min = distance2Points(p, points[1]);
 
     //Browses all points
@@ -120,11 +121,11 @@ int Algorithms::getDelaunayPoint(QPoint3D &s, QPoint3D &e, std::vector<QPoint3D>
                 QPoint3D c;
                 double r = getCircleRadius(s, e, points[i], c);
 
-                //Position of circle center in the right half plane
+                //Circle center in the right half plane
                 if (getPointLinePosition(c, s, e) == 0)
                     r = -r;
 
-                //Actulize minimum
+                //Actualize minimum
                 if(r < r_min)
                 {
                     r_min = r;
@@ -133,6 +134,7 @@ int Algorithms::getDelaunayPoint(QPoint3D &s, QPoint3D &e, std::vector<QPoint3D>
             }
         }
     }
+
     return i_min;
 }
 
@@ -161,8 +163,11 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
     //No suitable point
     if (i_o == -1)
     {
+        //Change orientation
         e1.changeOrientation();
-        i_o = getDelaunayPoint(q, qn, points);
+
+        //Find optimal Delaunay point
+        i_o = getDelaunayPoint(qn, q, points);
     }
 
     //Third point of the triangle
@@ -172,7 +177,7 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
     Edge e2(qn, q3);
     Edge e3(q3, q);
 
-    //Add first triangle to dt
+    //Add first triangle to DT
     dt.push_back(e1);
     dt.push_back(e2);
     dt.push_back(e3);
@@ -199,11 +204,11 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
             // Third point of the triangle
             QPoint3D q3n = points[i2];
 
-            // Create new triangle
+            //Create new triangle
             Edge ed2(ed1.getEnd(), q3n);
             Edge ed3(q3n, ed1.getStart());
 
-            //Add first triangle to dt
+            //Add triangle to DT
             dt.push_back(ed1);
             dt.push_back(ed2);
             dt.push_back(ed3);
@@ -212,7 +217,7 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
             ed2.changeOrientation();
             ed3.changeOrientation();
 
-            //Is ed2 and ed3 in ael
+            //Are ed2 and ed3 in active edges list
             std::list<Edge>::iterator ie2 = find(ael.begin(), ael.end(), ed2);
             std::list<Edge>::iterator ie3 = find(ael.begin(), ael.end(), ed3);
 
@@ -223,7 +228,7 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
                 ael.push_back(ed2);
             }
 
-            //Erase ed2
+            //Edge ed2 already in active edge list, erase
             else ael.erase(ie2);
 
             //Add edge ed3 to active edge list
@@ -233,9 +238,10 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
                 ael.push_back(ed3);
             }
 
-            //Erase ed3
+            //Edge ed3 already in active edge list, erase
             else ael.erase(ie3);
         }
     }
+
     return  dt;
 }

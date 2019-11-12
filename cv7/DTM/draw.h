@@ -22,7 +22,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     std::vector<QPoint3D> getPoints(){return points;}
     void clearPoints(){points.clear(); }
-    void clearDT(){clearPoints(); dt.clear();}
+    void clearDT(){dt.clear();}
 
 signals:
 
