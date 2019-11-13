@@ -167,15 +167,15 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
         e1.changeOrientation();
 
         //Find optimal Delaunay point
-        i_o = getDelaunayPoint(qn, q, points);
+        i_o = getDelaunayPoint(e1.getStart(), e1.getEnd(), points);
     }
 
     //Third point of the triangle
     QPoint3D q3 = points[i_o];
 
     //Create initial triangle
-    Edge e2(qn, q3);
-    Edge e3(q3, q);
+    Edge e2(e1.getEnd(), q3);
+    Edge e3(q3, e1.getStart());
 
     //Add first triangle to DT
     dt.push_back(e1);
