@@ -10,6 +10,8 @@ QT_END_NAMESPACE
 class Widget : public QWidget
 {
     Q_OBJECT
+private:
+    double z_min, z_max, dz;
 
 public:
     Widget(QWidget *parent = nullptr);
@@ -21,6 +23,14 @@ private slots:
     void on_pushButton_2_clicked();
 
     void on_pushButton_3_clicked();
+
+    void on_pushButton_4_clicked();
+
+    void on_lineEdit_editingFinished();
+
+    void on_lineEdit_2_editingFinished();
+
+    void on_lineEdit_3_editingFinished();
 
 private:
     Ui::Widget *ui;

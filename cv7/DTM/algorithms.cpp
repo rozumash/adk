@@ -245,3 +245,95 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
 
     return  dt;
 }
+
+QPoint3D Algorithms::getContourPoint(QPoint3D &p1, QPoint3D &p2, double z){
+    //Compute contour point
+    double x = (p2.x() - p1.x())/(p2.getZ() - p1.getZ()) * (z - p1.getZ()) + p1.x();
+    double y = (p2.y() - p1.y())/(p2.getZ() - p1.getZ()) * (z - p1.getZ()) + p1.y();
+    QPoint3D A(x, y, z);
+
+    return A;
+}
+
+std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z_min, double z_max, double dz)
+{
+    //Generate contour Lines
+    std::vector<Edge> contours;
+
+    //Browse all triangles
+    for (unsigned int i=0; i<dt.size(); i+=3)
+    {
+        //Get triangle vertices
+        QPoint3D p1 = dt[i].getStart();
+        QPoint3D p2 = dt[i].getEnd();
+        QPoint3D p3 = dt[i+1].getEnd();
+
+        // Find all plane - triangle intersections.
+        for (double z = z_min; z <= z_max; z += dz)
+        {
+            // Get height differences
+            double dz1 = z - p1.getZ();
+            double dz2 = z - p2.getZ();
+            double dz3 = z - p3.getZ();
+
+            //Test criterions
+            double t12 = dz1 * dz2;
+            double t23 = dz2 * dz3;
+            double t31 = dz3 * dz1;
+
+            //Triangle in the plane(coplanar)
+            if((dz1 == 0) && (dz2 == 0) && (dz3 == 0))
+                continue;
+
+            //Edge e12 of the triangle in the plane
+            else if ((dz1 == 0) && (dz2 == 0))
+                contours.push_back(dt[i]);
+
+            //Edge e23 of the triangle in the plane
+            else if ((dz2 == 0) && (dz3 == 0))
+                contours.push_back(dt[i+1]);
+
+            //Edge e31 of the triangle in the plane
+            else if ((dz3 == 0) && (dz1 == 0))
+                contours.push_back(dt[i+2]);
+
+            //Egdes e12, e13, intersected
+            else if ((t12 < 0 && t23 <= 0) || (t12 <= 0 && t23 < 0))
+            {
+                //Compute intersection points
+                QPoint3D a = getContourPoint(p1, p2, z);
+                QPoint3D b = getContourPoint(p2, p3, z);
+
+                // Create fragment of contour line.
+                Edge e(a, b);
+                contours.push_back(e);
+            }
+
+            //Egdes e23, e31, intersected
+            else if ((t23 < 0 && t31 <= 0) || (t23 <= 0 && t31 < 0))
+            {
+                //Compute intersection points
+                QPoint3D a = getContourPoint(p2, p3, z);
+                QPoint3D b = getContourPoint(p3, p1, z);
+
+                // Create fragment of contour line.
+                Edge e(a, b);
+                contours.push_back(e);
+            }
+
+            //Egdes e31, e12, intersected
+            else if ((t31 < 0 && t12 <= 0) || (t31 <= 0 && t12 < 0))
+            {
+                //Compute intersection points
+                QPoint3D a = getContourPoint(p3, p1, z);
+                QPoint3D b = getContourPoint(p1, p2, z);
+
+                // Create fragment of contour line
+                Edge e(a, b);
+                contours.push_back(e);
+            }
+        }
+    }
+
+    return contours;
+}

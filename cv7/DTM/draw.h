@@ -13,16 +13,19 @@ class Draw : public QWidget
 private:
     std::vector<QPoint3D> points;
     std::vector<Edge> dt;
+    std::vector<Edge> contours;
 
 public:
     explicit Draw(QWidget *parent = nullptr);
     void setPoints(std::vector<QPoint3D> &points_){points=points_;}
     void setDt(std::vector<Edge> &dt_){dt=dt_;}
+    void setContours(std::vector<Edge> &contours_){contours=contours_;}
     void paintEvent(QPaintEvent *event);
     void mousePressEvent(QMouseEvent *event);
     std::vector<QPoint3D> getPoints(){return points;}
     void clearPoints(){points.clear(); }
     void clearDT(){dt.clear();}
+
 
 signals:
 

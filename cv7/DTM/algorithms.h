@@ -16,6 +16,8 @@ public:
     static double distance2Points(QPoint3D &p1, QPoint3D &p2);
     static int getDelaunayPoint(QPoint3D &s, QPoint3D &e, std::vector<QPoint3D> &points);
     static std::vector<Edge> DT(std::vector<QPoint3D> &points);
+    static QPoint3D getContourPoint(QPoint3D &p1, QPoint3D &p2, double z);
+    static std::vector<Edge> createContourLines(std::vector<Edge> &dt, double z_min, double z_max, double dz);
 };
 
 #endif // ALGORITHMS_H
