@@ -7,10 +7,10 @@
 class SortbyX
 {
 public:
-    bool operator ()(QPoint3D &p1, QPoint3D &p2){
-
-        return p1.x() < p2.x() || (p1.x() == p2.x()) && (p1.y() < p2.y());
-     }
+    bool operator ()(QPoint3D &p1, QPoint3D &p2)
+    {
+        return (p1.x() < p2.x()) || (p1.x() == p2.x()) && (p1.y() < p2.y());
+    }
 };
 
 #endif // SORTBYX_H

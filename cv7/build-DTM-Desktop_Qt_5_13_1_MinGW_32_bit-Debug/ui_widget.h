@@ -142,7 +142,7 @@ public:
     {
         Widget->setWindowTitle(QCoreApplication::translate("Widget", "DTM", nullptr));
         pushButton->setText(QCoreApplication::translate("Widget", "Delaunay", nullptr));
-        label->setText(QCoreApplication::translate("Widget", "Nearest contour", nullptr));
+        label->setText(QCoreApplication::translate("Widget", "Lowest contour", nullptr));
         lineEdit->setText(QCoreApplication::translate("Widget", "0", nullptr));
         label_2->setText(QCoreApplication::translate("Widget", "Highest contour", nullptr));
         lineEdit_2->setText(QCoreApplication::translate("Widget", "500", nullptr));

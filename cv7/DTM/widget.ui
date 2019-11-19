@@ -52,7 +52,7 @@
      <item>
       <widget class="QLabel" name="label">
        <property name="text">
-        <string>Nearest contour</string>
+        <string>Lowest contour</string>
        </property>
       </widget>
      </item>

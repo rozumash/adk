@@ -246,7 +246,8 @@ std::vector<Edge> Algorithms::DT(std::vector<QPoint3D> &points)
     return  dt;
 }
 
-QPoint3D Algorithms::getContourPoint(QPoint3D &p1, QPoint3D &p2, double z){
+QPoint3D Algorithms::getContourPoint(QPoint3D &p1, QPoint3D &p2, double z)
+{
     //Compute contour point
     double x = (p2.x() - p1.x())/(p2.getZ() - p1.getZ()) * (z - p1.getZ()) + p1.x();
     double y = (p2.y() - p1.y())/(p2.getZ() - p1.getZ()) * (z - p1.getZ()) + p1.y();
@@ -257,7 +258,7 @@ QPoint3D Algorithms::getContourPoint(QPoint3D &p1, QPoint3D &p2, double z){
 
 std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z_min, double z_max, double dz)
 {
-    //Generate contour Lines
+    //Generate contour lines
     std::vector<Edge> contours;
 
     //Browse all triangles
@@ -276,7 +277,7 @@ std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z
             double dz2 = z - p2.getZ();
             double dz3 = z - p3.getZ();
 
-            //Test criterions
+            //Test criteria
             double t12 = dz1 * dz2;
             double t23 = dz2 * dz3;
             double t31 = dz3 * dz1;
@@ -297,7 +298,7 @@ std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z
             else if ((dz3 == 0) && (dz1 == 0))
                 contours.push_back(dt[i+2]);
 
-            //Egdes e12, e13, intersected
+            //Egdes e12, e13 are intersected
             else if ((t12 < 0 && t23 <= 0) || (t12 <= 0 && t23 < 0))
             {
                 //Compute intersection points
@@ -309,7 +310,7 @@ std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z
                 contours.push_back(e);
             }
 
-            //Egdes e23, e31, intersected
+            //Egdes e23, e31 are intersected
             else if ((t23 < 0 && t31 <= 0) || (t23 <= 0 && t31 < 0))
             {
                 //Compute intersection points
@@ -321,7 +322,7 @@ std::vector<Edge> Algorithms::createContourLines(std::vector<Edge> &dt, double z
                 contours.push_back(e);
             }
 
-            //Egdes e31, e12, intersected
+            //Egdes e31, e12 are intersected
             else if ((t31 < 0 && t12 <= 0) || (t31 <= 0 && t12 < 0))
             {
                 //Compute intersection points
