@@ -99,6 +99,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QPushButton" name="pushButton_5">
+       <property name="text">
+        <string>Analyze Slope</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButton_6">
+       <property name="text">
+        <string>Analyze Aspect</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <spacer name="verticalSpacer">
        <property name="orientation">
         <enum>Qt::Vertical</enum>

@@ -32,6 +32,8 @@ private slots:
 
     void on_lineEdit_3_editingFinished();
 
+    void on_pushButton_5_clicked();
+
 private:
     Ui::Widget *ui;
 };

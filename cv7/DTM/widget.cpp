@@ -1,6 +1,7 @@
 #include "widget.h"
 #include "ui_widget.h"
 #include "algorithms.h"
+#include "triangle.h"
 
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
@@ -49,12 +50,21 @@ void Widget::on_pushButton_3_clicked()
 
 void Widget::on_pushButton_4_clicked()
 {
-    ui->Canvas->clearDT();
+    std::vector<Edge> dt;
 
-    //Construct DT
-    std::vector<QPoint3D> points=ui->Canvas->getPoints();
-    std::vector<Edge> dt = Algorithms::DT(points);
-    ui->Canvas->setDt(dt);
+    //Create triangulation
+    if (ui->Canvas->getDtSize() == 0)
+    {
+        std::vector<QPoint3D> points=ui->Canvas->getPoints();
+        dt = Algorithms::DT(points);
+        ui->Canvas->setDt(dt);
+    }
+
+    //Triangulation has been created
+    else
+    {
+        dt = ui->Canvas->getDt();
+    }
 
     //Create contour lines
     std::vector<Edge> contours = Algorithms::createContourLines(dt, z_min, z_max, dz);
@@ -79,4 +89,28 @@ void Widget::on_lineEdit_3_editingFinished()
 {
     //Set dz
     dz = ui->lineEdit_3->text().toDouble();
+}
+
+void Widget::on_pushButton_5_clicked()
+{
+    std::vector<Edge> dt;
+
+    //Create triangulation
+    if (ui->Canvas->getDtSize() == 0)
+    {
+        std::vector<QPoint3D> points=ui->Canvas->getPoints();
+        dt = Algorithms::DT(points);
+        ui->Canvas->setDt(dt);
+    }
+
+    //Triangulation has been created
+    else
+    {
+        dt = ui->Canvas->getDt();
+    }
+
+    //Analyze DTM
+    std::vector<Triangle> dtm = Algorithms::analyzeDTM(dt);
+    ui->Canvas->setDTM(dtm);
+    repaint();
 }
