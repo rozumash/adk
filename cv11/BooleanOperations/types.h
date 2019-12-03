@@ -1,7 +1,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-//Position of point and line
+//Position of the point and line
 typedef enum
 {
   LeftHp = 0,
@@ -10,7 +10,7 @@ typedef enum
 
 }TPointLinePosition;
 
-//Position of point and polygon
+//Position of the point and polygon
 typedef enum
 {
     Inner,
@@ -19,7 +19,7 @@ typedef enum
 
 }TPointPolygonPosition;
 
-//Define boolean operations
+//Define Boolean operation
 typedef enum
 {
     Union,
@@ -29,7 +29,7 @@ typedef enum
 
 }TBooleanOparation;
 
-//2 Line position
+//2 lines position
 typedef enum
 {
   Paralel,
