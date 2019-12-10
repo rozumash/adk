@@ -28,18 +28,19 @@ void Draw::paintEvent(QPaintEvent *event)
     painter.begin(this);
 
     //Draw A
-    QPen polA(Qt::green);
-    painter.setPen(polA);
+    QPen pA(Qt::green);
+    painter.setPen(pA);
     drawPolygon(painter, a);
 
     //Draw B
-    QPen polB(Qt::blue);
-    painter.setPen(polB);
+    QPen pB(Qt::blue);
+    painter.setPen(pB);
     drawPolygon(painter, b);
 
     //Draw edges
-    QPen polE(Qt::red);
-    painter.setPen(polE);
+    QPen pE(Qt::red);
+    pE.setWidth(2);
+    painter.setPen(pE);
     for(int i = 0; i < res.size(); i++)
     {
         painter.drawLine(res[i].getStart(), res[i].getEnd());
@@ -54,9 +55,7 @@ void Draw::drawPolygon(QPainter &painter, std::vector<QPointFB> &polygon)
     QPolygon polyg;
     for(int i = 0; i < polygon.size(); i++)
     {
-        int x = polygon[i].x();
-        int y = polygon[i].y();
-        polyg.append(QPoint (x, y));
+        polyg.append(QPoint (polygon[i].x(), polygon[i].y()));
     }
 
     painter.drawPolygon(polyg);

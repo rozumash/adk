@@ -27,7 +27,7 @@ typedef enum
     DifferenceAB,
     DifferenceBA
 
-}TBooleanOparation;
+}TBooleanOperation;
 
 //2 lines position
 typedef enum

@@ -147,7 +147,7 @@ T2LinesPosition Algorithms::get2LinesPosition(QPointFB &p1, QPointFB &p2, QPoint
 }
 
 
-std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA, std::vector<QPointFB> &polygonB, TBooleanOparation operation)
+std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA, std::vector<QPointFB> &polygonB, TBooleanOperation operation)
 {
     //Create polygon overlay
     std::vector<Edge> result;
@@ -158,7 +158,8 @@ std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA,
     //Set positions of edges
     setPositionsAB(polygonA, polygonB);
 
-    //Select edges by position
+    //Select edges by position:
+
     //Union
     if (operation == Union){
         selectEdges(polygonA, Outer, result);
@@ -184,7 +185,7 @@ std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA,
         selectEdges(polygonB, Outer, result);
     }
 
-    //Singular edges
+    //Singular edges: always
     selectEdges(polygonA, On, result);
     selectEdges(polygonB, On, result);
 
@@ -192,7 +193,8 @@ std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA,
 }
 
 
-void Algorithms::processIntersection(QPointFB &pi, double &t, std::vector<QPointFB> &polygon, int &i){
+void Algorithms::processIntersection(QPointFB &pi, double &t, std::vector<QPointFB> &polygon, int &i)
+{
 
     //Process and add intersection
     double eps = 1.0e-6;
@@ -200,7 +202,7 @@ void Algorithms::processIntersection(QPointFB &pi, double &t, std::vector<QPoint
     {
         //Add point to the list
         i += 1;
-        polygon.insert(polygon.begin()+i, pi);
+        polygon.insert(polygon.begin() + i, pi);
     }
 }
 
@@ -215,7 +217,6 @@ void Algorithms::computePolygonIntersection(std::vector<QPointFB> &pa, std::vect
         //Polygon B
         for (int j = 0; j < pb.size(); j++)
         {
-            //Intersection exists
             QPointFB pi;
             if (get2LinesPosition(pa[i], pa[(i+1)%pa.size()], pb[j], pb[(j+1)%pb.size()], pi) == Intersected)
             {
@@ -239,47 +240,52 @@ void Algorithms::computePolygonIntersection(std::vector<QPointFB> &pa, std::vect
 
                 //Intersection
                 QPointFB pi = item.second;
-                double pi_alfa = pi.getAlpha();
+                double alfa = pi.getAlpha();
 
                 //Process intersection
-                processIntersection(pi, pi_alfa, pa, i);
+                processIntersection(pi, alfa, pa, i);
             }
         }
     }
 }
 
+
 void Algorithms::setPositionsAB(std::vector<QPointFB> &pa, std::vector<QPointFB> &pb)
 {
-    //Set positions of edges of both polygons
+    //Set positions of edges of both polygons one another
     setPositions(pa, pb);
     setPositions(pb, pa);
 }
 
+
 void Algorithms::setPositions(std::vector<QPointFB> &pa, std::vector<QPointFB> &pb)
 {
-    for(int i = 0; i < pa.size(); i++)
+    //Set position of edges of polygon to another polygon
+    int n = pa.size();
+    for(int i = 0; i < n; i++)
     {
-        //Calculate center of edge
-        double mx = (pa[i].x() + pa[(i + 1)% pa.size()].x())/2;
-        double my = (pa[i].y() + pa[(i + 1)% pa.size()].y())/2;
+        //Calculate mid-point of edge
+        double mx = (pa[i].x() + pa[(i + 1)%n].x()) / 2;
+        double my = (pa[i].y() + pa[(i + 1)%n].y()) / 2;
 
         //Find position of point m and polygon B
         QPointFB m(mx, my);
         TPointPolygonPosition position = positionPointPolygonWinding(m, pb);
 
-        //Store position of m in the first point of the edge
+        //Store position of m in the start point of the edge
         pa[i].setPosition(position);
     }
 }
+
 
 void Algorithms::selectEdges(std::vector<QPointFB> &pol, TPointPolygonPosition position, std::vector<Edge> &edges)
 {
     //Select edges according to position
     for(int i = 0; i < pol.size(); i++)
     {
-        //Found apropriate edge
-        if (pol[i].getPosition() == position){
-
+        //Apropriate edge found
+        if (pol[i].getPosition() == position)
+        {
             //Create edge and add to the list
             Edge e (pol[i], pol[(i+1)%pol.size()]);
             edges.push_back(e);

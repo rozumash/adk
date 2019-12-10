@@ -23,11 +23,27 @@ void Widget::on_pushButton_clicked()
 
 void Widget::on_pushButton_2_clicked()
 {
+    //Get polygons
     std::vector<QPointFB> polA = ui->Canvas->getA();
     std::vector<QPointFB> polB = ui->Canvas->getB();
-    std::vector<Edge> res = Algorithms::booleanOperations(polA, polB, Union);
+
+    //Perform Boolean operation
+    TBooleanOperation oper = (TBooleanOperation)(ui->comboBox->currentIndex());
+    std::vector<Edge> res = Algorithms::booleanOperations(polA, polB, oper);
+
+    //Set results and update
     ui->Canvas->setRes(res);
     repaint();
+}
 
+void Widget::on_pushButton_3_clicked()
+{
+    ui->Canvas->clearResults();
+    repaint();
+}
 
+void Widget::on_pushButton_4_clicked()
+{
+    ui->Canvas->clearAll();
+    repaint();
 }
