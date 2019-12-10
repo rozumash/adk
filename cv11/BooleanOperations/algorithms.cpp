@@ -1,5 +1,8 @@
 #include "algorithms.h"
 #include <cmath>
+#include <map>
+#include "qpointfb.h"
+#include "types.h"
 
 
 Algorithms::Algorithms()
@@ -144,10 +147,142 @@ T2LinesPosition Algorithms::get2LinesPosition(QPointFB &p1, QPointFB &p2, QPoint
 }
 
 
-std::vector<Edge> booleanOperations(std::vector<QPointFB> &polygonA, std::vector<QPointFB> &polygonB, TBooleanOparation &operation)
+std::vector<Edge> Algorithms::booleanOperations(std::vector<QPointFB> &polygonA, std::vector<QPointFB> &polygonB, TBooleanOparation operation)
 {
     //Create polygon overlay
     std::vector<Edge> result;
 
+    //Find intersections
+    computePolygonIntersection(polygonA, polygonB);
+
+    //Set positions of edges
+    setPositionsAB(polygonA, polygonB);
+
+    //Select edges by position
+    //Union
+    if (operation == Union){
+        selectEdges(polygonA, Outer, result);
+        selectEdges(polygonB, Outer, result);
+    }
+
+    //Intersect
+    else if(operation == Intersect){
+        selectEdges(polygonA, Inner, result);
+        selectEdges(polygonB, Inner, result);
+    }
+
+    //Difference A - B
+    else if(operation == DifferenceAB){
+        selectEdges(polygonA, Outer, result);
+        selectEdges(polygonB, Inner, result);
+    }
+
+    //Difference B - A
+    else if (operation == DifferenceBA)
+    {
+        selectEdges(polygonA, Inner, result);
+        selectEdges(polygonB, Outer, result);
+    }
+
+    //Singular edges
+    selectEdges(polygonA, On, result);
+    selectEdges(polygonB, On, result);
+
     return result;
+}
+
+
+void Algorithms::processIntersection(QPointFB &pi, double &t, std::vector<QPointFB> &polygon, int &i){
+
+    //Process and add intersection
+    double eps = 1.0e-6;
+    if ((t >= eps) && (t <= (1-eps)))
+    {
+        //Add point to the list
+        i += 1;
+        polygon.insert(polygon.begin()+i, pi);
+    }
+}
+
+
+void Algorithms::computePolygonIntersection(std::vector<QPointFB> &pa, std::vector<QPointFB> &pb)
+{
+    //Compute intersection of two polygons
+    for (int i = 0; i < pa.size(); i++)
+    {
+        //Create map of intersections
+        std::map<double, QPointFB> intersections;
+        //Polygon B
+        for (int j = 0; j < pb.size(); j++)
+        {
+            //Intersection exists
+            QPointFB pi;
+            if (get2LinesPosition(pa[i], pa[(i+1)%pa.size()], pb[j], pb[(j+1)%pb.size()], pi) == Intersected)
+            {
+                //Get alpha and beta
+                double alfa = pi.getAlpha();
+                double beta = pi.getBeta();
+
+                //Add intersection to map according to alpha
+                intersections[alfa] = pi;
+
+                //Process intersection
+                processIntersection(pi, beta, pb, j);
+            }
+        }
+
+        // Intersections has been found
+        if (intersections.size() > 0)
+        {
+            //Browse all intersections
+            for (std::pair<double, QPointFB> item:intersections){
+
+                //Intersection
+                QPointFB pi = item.second;
+                double pi_alfa = pi.getAlpha();
+
+                //Process intersection
+                processIntersection(pi, pi_alfa, pa, i);
+            }
+        }
+    }
+}
+
+void Algorithms::setPositionsAB(std::vector<QPointFB> &pa, std::vector<QPointFB> &pb)
+{
+    //Set positions of edges of both polygons
+    setPositions(pa, pb);
+    setPositions(pb, pa);
+}
+
+void Algorithms::setPositions(std::vector<QPointFB> &pa, std::vector<QPointFB> &pb)
+{
+    for(int i = 0; i < pa.size(); i++)
+    {
+        //Calculate center of edge
+        double mx = (pa[i].x() + pa[(i + 1)% pa.size()].x())/2;
+        double my = (pa[i].y() + pa[(i + 1)% pa.size()].y())/2;
+
+        //Find position of point m and polygon B
+        QPointFB m(mx, my);
+        TPointPolygonPosition position = positionPointPolygonWinding(m, pb);
+
+        //Store position of m in the first point of the edge
+        pa[i].setPosition(position);
+    }
+}
+
+void Algorithms::selectEdges(std::vector<QPointFB> &pol, TPointPolygonPosition position, std::vector<Edge> &edges)
+{
+    //Select edges according to position
+    for(int i = 0; i < pol.size(); i++)
+    {
+        //Found apropriate edge
+        if (pol[i].getPosition() == position){
+
+            //Create edge and add to the list
+            Edge e (pol[i], pol[(i+1)%pol.size()]);
+            edges.push_back(e);
+        }
+    }
 }

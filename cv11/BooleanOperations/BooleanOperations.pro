@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     algorithms.cpp \
+    draw.cpp \
     edge.cpp \
     main.cpp \
     qpointfb.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     algorithms.h \
+    draw.h \
     edge.h \
     qpointfb.h \
     types.h \
