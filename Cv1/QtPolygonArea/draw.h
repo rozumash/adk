@@ -14,7 +14,7 @@ public:
     explicit Draw(QWidget *parent = nullptr);
     void mousePressEvent(QMouseEvent *e);
     void paintEvent(QPaintEvent *e);
-
+    std::vector <QPoint> & getPoints (){return points;}
 
 signals:
 
