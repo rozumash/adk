@@ -7,6 +7,7 @@ Algorithms::Algorithms()
 
 }
 
+
 int Algorithms::getPointLinePosition(QPoint &q, QPoint &p1, QPoint &p2)
 {
     //Get point and line position
@@ -29,6 +30,7 @@ int Algorithms::getPointLinePosition(QPoint &q, QPoint &p1, QPoint &p2)
     //Point on the line
     return -1;
 }
+
 
 double Algorithms::getAngle(QPoint &p1, QPoint &p2, QPoint &p3, QPoint &p4)
 {
