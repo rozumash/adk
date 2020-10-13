@@ -37,6 +37,7 @@ void Draw::mousePressEvent(QMouseEvent *e)
     repaint();
 }
 
+
 void Draw::paintEvent(QPaintEvent *e)
 {
     //Start drawing
@@ -46,7 +47,7 @@ void Draw::paintEvent(QPaintEvent *e)
     //Create polygon
     QPolygon pol;
 
-    //Copy all ppoints into polygon
+    //Copy all points into polygon
     for (int i = 0; i< polygon.size(); i++ )
     {
          pol.append(polygon[i]);
@@ -59,5 +60,6 @@ void Draw::paintEvent(QPaintEvent *e)
     int r = 5;
     painter.drawEllipse(q.x(), q.y(), 2 * r, 2 *r);
 
+    //End drawing
     painter.end();
 }

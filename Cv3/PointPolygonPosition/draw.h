@@ -19,8 +19,8 @@ public:
     void mousePressEvent(QMouseEvent *e);
     void paintEvent(QPaintEvent *e);
     void changeMode(){draw_mode = !draw_mode;}
-
-
+    QPoint & getPoint(){return q;}
+    std::vector<QPoint> & getPolygon (){return polygon;}
 };
 
 #endif // DRAW_H
