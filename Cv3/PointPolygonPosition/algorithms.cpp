@@ -127,6 +127,7 @@ int Algorithms::getPositionRay(QPoint &q, std::vector<QPoint> &pol)
         }
     }
 
+    //Get amount of intersections: odd or even
     return k%2;
 }
 
