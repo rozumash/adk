@@ -32,10 +32,9 @@ int Algorithms::getPointLinePosition(QPoint &q, QPoint &p1, QPoint &p2)
 
 double Algorithms::getAngle(QPoint &p1, QPoint &p2, QPoint &p3, QPoint &p4)
 {
-    // Calculate Vector betwen 2 vectors.
+    //Get vectors u, v
     double ux = p2.x() - p1.x();
     double uy = p2.y() - p1.y();
-
     double vx = p4.x() - p3.x();
     double vy = p4.y() - p3.y();
 
@@ -48,6 +47,7 @@ double Algorithms::getAngle(QPoint &p1, QPoint &p2, QPoint &p3, QPoint &p4)
 
     return fabs(acos(dot/(nu*nv)));
 }
+
 
 int Algorithms::getPositionWinding(QPoint &q, std::vector<QPoint> &pol)
 {
