@@ -9,7 +9,7 @@ class Draw : public QWidget
 {
     Q_OBJECT
 private:
-    boolean draw_mode;  //true = polygon, false = point
+    bool draw_mode;  //true = polygon, false = point
     std::vector <QPoint> polygon;
     QPoint q;
 
